@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extract Content Example</title>
+    <style>
+        /* Basic styling for better readability */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #content {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Extracted Content from Cryptometer</h1>
+    <div id="content">
+        <!-- The content will be loaded here -->
+    </div>
+
+    <script>
+        // Function to fetch and display content from a URL
+        async function fetchAndDisplayContent() {
+            try {
+                // URL of the website from which content will be fetched
+                const url = 'https://www.cryptometer.io/volume-flow';
+
+                // Fetch the HTML content from the URL
+                const response = await fetch(url);
+                const text = await response.text();
+
+                // Create a temporary DOM element to parse the HTML content
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+
+                // Extract content by class name
+                const content = doc.querySelector('.col-12'); // Targeting the class "col-12"
+
+                // Display the extracted content
+                document.getElementById('content').innerHTML = content ? content.innerHTML : '<p>No content found</p>';
+            } catch (error) {
+                console.error('Error fetching content:', error);
+                document.getElementById('content').innerHTML = '<p>Failed to load content</p>';
+            }
+        }
+
+        // Call the function to fetch and display content
+        fetchAndDisplayContent();
+    </script>
+</body>
+</html>
