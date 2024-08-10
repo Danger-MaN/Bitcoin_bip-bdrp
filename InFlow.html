@@ -1,56 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1 Extract Content Example</title>
+    <title>عرض موقع داخل موقع</title>
     <style>
-        /* Basic styling for better readability */
-        body {
-            font-family: Arial, sans-serif;
-        }
-        #content {
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin-top: 20px;
-            background-color: #f9f9f9;
+        /* أسلوب iframe */
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
         }
     </style>
 </head>
 <body>
-    <h1>Extracted Content from Cryptometer</h1>
-    <div id="content">
-        <!-- The content will be loaded here -->
-    </div>
+    <h1>موقع معروض داخل موقع آخر</h1>
+    <iframe id="myIframe" src="https://www.cryptometer.io/volume-flow"></iframe>
 
     <script>
-        // Function to fetch and display content from a URL
-        async function fetchAndDisplayContent() {
-            try {
-                // URL of the website from which content will be fetched
-                const url = 'https://api.allorigins.win/get?url=https://www.cryptometer.io/volume-flow';
+        document.getElementById('myIframe').onload = function() {
+            // تأخير للوصول إلى محتوى الـ iframe
+            setTimeout(function() {
+                try {
 
-                // Fetch the HTML content from the URL
-                const response = await fetch(url);
-                const text = await response.text();
+                    var iframe = document.getElementById('myIframe');
+                    console.log("A");
+                    
+                    // التحقق من سياسة نفس الأصل
+                    if (iframe.contentDocument) {
+                        var iframeDoc = iframe.contentDocument;
+                    } else if (iframe.contentWindow) {
+                        var iframeDoc = iframe.contentWindow.document;
+                    } else {
+                        throw new Error("لا يمكن الوصول إلى محتوى الـ iframe.");
+                    }
+                    console.log("X");
+                    // طباعة محتوى الـ iframe في وحدة التحكم (Console)
+                    console.log("محتوى الـ iframe:");
+                    console.log(iframeDoc.body.innerHTML);
 
-                // Create a temporary DOM element to parse the HTML content
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(text, 'text/html');
-
-                // Extract content by class name
-                const content = doc.querySelector('.col-12'); // Targeting the class "col-12"
-
-                // Display the extracted content
-                document.getElementById('content').innerHTML = content ? content.innerHTML : '<p>No content found</p>';
-            } catch (error) {
-                console.error('Error fetching content:', error);
-                document.getElementById('content').innerHTML = '<p>Failed to load content</p>';
-            }
-        }
-
-        // Call the function to fetch and display content
-        fetchAndDisplayContent();
+                    // اسم الـ class الذي تريد استثناؤه
+                    var exemptClass = 'col-12';
+                    console.log("W");
+                    // حذف جميع العناصر ما عدا العنصر الذي يحتوي على الـ class المحدد
+                    var allElements = iframeDoc.body.getElementsByTagName('*');
+                    for (var i = allElements.length - 1; i >= 0; i--) {
+                        var element = allElements[i];
+                        if (!element.classList.contains(exemptClass)) {
+                            element.parentNode.removeChild(element);
+                        }
+                    }
+                } catch (e) {
+                    console.error("حدث خطأ:", e);
+                }
+            }, 1000); // تأخير لمدة 1 ثانية، يمكنك ضبط الوقت حسب الحاجة
+        };
     </script>
 </body>
 </html>
