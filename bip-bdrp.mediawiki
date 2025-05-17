@@ -67,7 +67,7 @@ A sample LTAP generator may look like:
 bitcoin-cli signmessage "&lt;wallet_address&gt;" "LTAP - &lt;wallet_address&gt; - &lt;timestamp&gt; - optional note"
 </pre>
 
-A note on the importance of this proposal:
+==A note on the importance of this proposal==
 This update gives future generations the opportunity to own and mine more Bitcoin, rather than constantly losing it, which ultimately leads to a depleted supply of Bitcoin. This is considered unfair to future generations, especially as the total Bitcoin mining capacity is depleted.
 
 ==Copyright==
